@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.*;
 
@@ -21,7 +22,7 @@ public class TeleOp extends OpMode {
     double yMovement;
     double rotation;
     double drivePower;
-    double degrees = 0;
+    double original = 0;
 
     org.firstinspires.ftc.teamcode.hardwareMaps.MecanumDrive drive;
 
@@ -44,7 +45,7 @@ public class TeleOp extends OpMode {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         joe = hardwareMap.servo.get("joe");
-        joe.setPosition(degrees);
+        joe.setPosition(original);
 
         drive = new MecanumDrive(frontLeft, frontRight, backLeft, backRight);
 
@@ -63,7 +64,7 @@ public class TeleOp extends OpMode {
 
             joe.setPosition(0.5);
         } else if (gamepad1.b) {
-            joe.setPosition(degrees);
+            joe.setPosition(original);
         }
 
 
