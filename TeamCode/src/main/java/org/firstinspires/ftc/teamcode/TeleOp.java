@@ -14,11 +14,14 @@ public class TeleOp extends OpMode {
     DcMotor frontRight;
     DcMotor backLeft;
     DcMotor backRight;
+    Servo joe;
+
 
     double xMovement;
     double yMovement;
     double rotation;
     double drivePower;
+    double degrees = 0;
 
     org.firstinspires.ftc.teamcode.hardwareMaps.MecanumDrive drive;
 
@@ -40,6 +43,9 @@ public class TeleOp extends OpMode {
         backRight = hardwareMap.dcMotor.get("backRight");
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        joe = hardwareMap.servo.get("joe");
+        joe.setPosition(degrees);
+
         drive = new MecanumDrive(frontLeft, frontRight, backLeft, backRight);
 
     }
@@ -53,7 +59,14 @@ public class TeleOp extends OpMode {
 
         drive.moveInTeleop(xMovement, yMovement, rotation, drivePower);
 
+        if (gamepad1.a) {
+
+            joe.setPosition(0.5);
+        } else if (gamepad1.b) {
+            joe.setPosition(degrees);
         }
+
+
 
     }
 
