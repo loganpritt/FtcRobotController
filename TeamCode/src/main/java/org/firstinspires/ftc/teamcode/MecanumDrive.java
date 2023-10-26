@@ -25,7 +25,6 @@ public class MecanumDrive {
     private DcMotor backRightDrive = null;
 
 
-
     //previous encoders values to see what the target should really be
 
     //this takes away the need to restart the encoders when setting a new target position,

@@ -15,6 +15,8 @@ public class TeleOp extends OpMode {
     DcMotor frontRight;
     DcMotor backLeft;
     DcMotor backRight;
+    DcMotor leftShoulder;
+    DcMotor rightShoulder;
     Servo joe;
 
 
@@ -61,7 +63,7 @@ public class TeleOp extends OpMode {
 
         if (gamepad1.a) {
 
-            joe.setPosition(0.5);
+            joe.setPosition(1);
         } else if (gamepad1.b) {
             joe.setPosition(0);
         }
