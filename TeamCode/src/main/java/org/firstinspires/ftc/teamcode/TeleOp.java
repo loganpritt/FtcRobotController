@@ -84,10 +84,10 @@ public class TeleOp extends OpMode {
         leftShoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightShoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        // Set a lower power for slower movement
-        double power = 0.2; // Reduce the power for slower movement
-        leftShoulder.setPower(power);
-        rightShoulder.setPower(-power); // Set the right motor with the opposite sign
+        // Set an initial power value for both motors
+        double initialPower = 0.2; // Initial power for descent
+        leftShoulder.setPower(initialPower);
+        rightShoulder.setPower(-initialPower); // Set the right motor with the opposite sign
 
         // Handle resetting the encoders for both motors using dpad_down
         if (gamepad1.dpad_down) {
@@ -95,6 +95,13 @@ public class TeleOp extends OpMode {
             leftShoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightShoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightShoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
+        // Adjust the power for slower ramp-down when the trigger is released
+        if (triggerInput == 0) {
+            double rampDownPower = 0.05; // Lower power for slow descent after trigger release
+            leftShoulder.setPower(rampDownPower);
+            rightShoulder.setPower(-rampDownPower);
         }
 
         // Your other code for driving and servo control
