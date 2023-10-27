@@ -45,6 +45,13 @@ public class TeleOp extends OpMode {
         backRight = hardwareMap.dcMotor.get("backRight");
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        leftShoulder = hardwareMap.dcMotor.get("leftShoulder");
+        leftShoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        rightShoulder = hardwareMap.dcMotor.get("rightShoulder");
+        rightShoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
         joe = hardwareMap.servo.get("joe");
         joe.setPosition(0);
 
@@ -53,6 +60,23 @@ public class TeleOp extends OpMode {
     }
 
     public void loop() {
+        int targetPosition = 800; // Replace with your desired target position
+        if (gamepad1.left_bumper) {
+            leftShoulder.setTargetPosition(targetPosition);
+            rightShoulder.setTargetPosition(targetPosition);
+            leftShoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightShoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftShoulder.setPower(0.5); // Set the desired power
+            rightShoulder.setPower(-0.5); // Set the desired power
+        }
+        if (gamepad1.dpad_down) {
+            // Reset the current position to zero for the leftShoulder motor
+            leftShoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            leftShoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
+
+
 
         xMovement = gamepad1.left_stick_x;
         yMovement = gamepad1.left_stick_y;
@@ -66,10 +90,13 @@ public class TeleOp extends OpMode {
             joe.setPosition(1);
         } else if (gamepad1.b) {
             joe.setPosition(0);
+                }
+
+
         }
 
 
 
     }
 
-}
+
