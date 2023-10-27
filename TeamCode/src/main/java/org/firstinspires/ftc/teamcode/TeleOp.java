@@ -16,7 +16,10 @@ public class TeleOp extends OpMode {
     DcMotor backLeft;
     DcMotor backRight;
     DcMotor leftShoulder;
+    double targetPositionMotor1 = 0;
     DcMotor rightShoulder;
+    double targetPositionMotor2 = 0;
+
     Servo joe;
 
 
@@ -48,9 +51,12 @@ public class TeleOp extends OpMode {
 
         leftShoulder = hardwareMap.dcMotor.get("leftShoulder");
         leftShoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
         rightShoulder = hardwareMap.dcMotor.get("rightShoulder");
         rightShoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         joe = hardwareMap.servo.get("joe");
@@ -61,29 +67,36 @@ public class TeleOp extends OpMode {
     }
 
     public void loop() {
-         // Replace with your desired target position
-        if (gamepad1.left_bumper) {
-            leftShoulder.setTargetPosition(10);
-            rightShoulder.setTargetPosition(10);
-            leftShoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightShoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            leftShoulder.setPower(0.5); // Set the desired power
-            rightShoulder.setPower(0.5); // Set the desired power
+        double triggerInput = gamepad1.right_trigger;
 
+        // Map the trigger input to target positions
+        int minTargetPosition = 0;
+        int maxTargetPosition = 1000; // Replace with your desired max position
 
+        int targetPosition = (int) (minTargetPosition + triggerInput * (maxTargetPosition - minTargetPosition));
 
-        }
+        // Set the target positions for both motors
+        leftShoulder.setTargetPosition(targetPosition);
+        rightShoulder.setTargetPosition(targetPosition);
+
+        // Set the run mode to RUN_TO_POSITION for both motors
+        leftShoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightShoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // Set the power for both motors
+        double power = 0.5; // Set your desired power
+        leftShoulder.setPower(power);
+        rightShoulder.setPower(power);
+
+        // Handle resetting the encoders for both motors using dpad_down
         if (gamepad1.dpad_down) {
-            // Reset the current position to zero for the leftShoulder motor
             leftShoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftShoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightShoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightShoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
-
-
-
+        // Your other code for driving and servo control
         xMovement = gamepad1.left_stick_x;
         yMovement = gamepad1.left_stick_y;
         rotation = gamepad1.right_stick_x;
@@ -92,17 +105,13 @@ public class TeleOp extends OpMode {
         drive.moveInTeleop(xMovement, yMovement, rotation, drivePower);
 
         if (gamepad1.a) {
-
             joe.setPosition(1);
         } else if (gamepad1.b) {
             joe.setPosition(0);
-                }
-
-
         }
 
-
-
     }
+}
+
 
 
