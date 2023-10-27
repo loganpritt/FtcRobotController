@@ -71,22 +71,23 @@ public class TeleOp extends OpMode {
 
         // Map the trigger input to target positions
         int minTargetPosition = 0;
-        int maxTargetPosition = 1000; // Replace with your desired max position
+        int maxTargetPosition = 100; // Adjust the maximum position as needed
 
+        // Reduce the maximum position to slow down the descent
         int targetPosition = (int) (minTargetPosition + triggerInput * (maxTargetPosition - minTargetPosition));
 
         // Set the target positions for both motors
         leftShoulder.setTargetPosition(targetPosition);
-        rightShoulder.setTargetPosition(targetPosition);
+        rightShoulder.setTargetPosition(-targetPosition); // Set the right motor with the opposite sign
 
         // Set the run mode to RUN_TO_POSITION for both motors
         leftShoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightShoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        // Set the power for both motors
-        double power = 0.5; // Set your desired power
+        // Set a lower power for slower movement
+        double power = 0.2; // Reduce the power for slower movement
         leftShoulder.setPower(power);
-        rightShoulder.setPower(power);
+        rightShoulder.setPower(-power); // Set the right motor with the opposite sign
 
         // Handle resetting the encoders for both motors using dpad_down
         if (gamepad1.dpad_down) {
@@ -100,7 +101,7 @@ public class TeleOp extends OpMode {
         xMovement = gamepad1.left_stick_x;
         yMovement = gamepad1.left_stick_y;
         rotation = gamepad1.right_stick_x;
-        drivePower = 0.8 * Math.max(Math.max(Math.abs(xMovement), Math.abs(yMovement)), Math.abs(rotation));
+        drivePower = 0.6 * Math.max(Math.max(Math.abs(xMovement), Math.abs(yMovement)), Math.abs(rotation));
 
         drive.moveInTeleop(xMovement, yMovement, rotation, drivePower);
 
@@ -109,7 +110,6 @@ public class TeleOp extends OpMode {
         } else if (gamepad1.b) {
             joe.setPosition(0);
         }
-
     }
 }
 
